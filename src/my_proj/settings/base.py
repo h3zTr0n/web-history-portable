@@ -77,8 +77,8 @@ INSTALLED_APPS = (
 
     'profiles',
     'accounts',
-    'talks', # app for Showing memos
-
+    # 'talks',
+    'gethistoryfile',
 )
 
 MIDDLEWARE_CLASSES = (

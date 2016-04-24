@@ -1,21 +1,25 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from django.template.defaultfilters import slugify
+
 from django.db import models
 from django.contrib.auth.models import User
 # from django.template.defaultfilters import slugify
 # Create your models here.
 
+CHOICES = (
+        'M': 'Male',
+        'F': 'Female'
+        )
 class User(models.Model):
     user = models.OneToOneField(user)
     slug = models.SlugField()
-    sex = models.CharField(max_length=255)
+    sex = models.CharField(choice=CHOICES)
 
     def__str__(self):
          return user
 
         class Meta:
-            attach_together = ('user', 'sex')
+            unique_together = ('user', 'sex',)
 
 class UrlOs(models.Model):
     os_name = models.CharField(max_length=255)
@@ -39,5 +43,4 @@ class BrowserDetails(models.Model):
     def __str__(self):
         return url_name
 
-    class Meta:
-        abstract = True
+    
