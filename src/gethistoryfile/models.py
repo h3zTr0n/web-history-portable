@@ -7,19 +7,19 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 CHOICES = (
-        'M': 'Male',
-        'F': 'Female'
+        ('M', 'Male'),
+        ('F', 'Female'),
         )
 class User(models.Model):
-    user = models.OneToOneField(user)
+    user = models.CharField(max_length=255)
     slug = models.SlugField()
-    sex = models.CharField(choice=CHOICES)
+    sex = models.CharField(choices=CHOICES, max_length=2)
 
-    def__str__(self):
+    def __str__(self):
          return user
 
-        class Meta:
-            unique_together = ('user', 'sex',)
+    class Meta:
+        unique_together = ('user', 'sex',)
 
 class UrlOs(models.Model):
     os_name = models.CharField(max_length=255)
@@ -29,18 +29,13 @@ class UrlOs(models.Model):
     def __str__(self):
         return ("Running {0}".format(os_name))
 
-    class Meta:
-        abstract = False
-
-class BrowserDetails(models.Model):
-    url_name = models.CharField(max_length=255)
-    browser_name = models.CharField(max_length=255)
-    browser_vender = models.CharField(max_length=255)
-    time_viewd = models.CharField(max_length=255)
-    checked = models.BooleanField(checked=True)
-    search_engine = models.CharField(max_legnth=255) # like Google, MSN etc
-
-    def __str__(self):
-        return url_name
-
-    
+# class BrowserDetails(models.Model):
+#     url_name = models.CharField(max_length=255)
+#     browser_name = models.CharField(max_length=255)
+#     browser_vender = models.CharField(max_length=255)
+#     time_viewd = models.CharField(max_length=255)
+#     checked = models.BooleanField(checked=True)
+#     search_engine = models.CharField(max_legnth=255) # like Google, MSN etc
+#
+#     def __str__(self):
+#         return url_name

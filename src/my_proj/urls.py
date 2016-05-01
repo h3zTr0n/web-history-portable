@@ -5,16 +5,16 @@ from django.contrib import admin
 from talks import views
 import profiles.urls
 import accounts.urls
-from . import views
-
+from gethistoryfile import urls as historyUrls
 
 urlpatterns = [
     # url('r^^home/', views.HomePageView.as_view(), name='my_page'),
-    url(r'^$', views.HomePage.as_view(), name='home'),
-    url(r'^about/$', views.AboutPage.as_view(), name='about'),
+    # url(r'^$', views.HomePage.as_view(), name='home'),
+    # url(r'^about/$', views.AboutPage.as_view(), name='about'),
     url(r'^users/', include(profiles.urls, namespace='profiles')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(accounts.urls, namespace='accounts')),
+    url(r'^home/activity', include(historyUrls))
     # url(r'^talks/', include('talks.urls', namespace='talks')),
     # url(r'^history/', include('history.urls', namespace='history')),
 ]
