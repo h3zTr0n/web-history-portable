@@ -43,7 +43,8 @@ class GetHistoryData():
                 if url_line.startswith('http'):
                     return url_line.split('URL')[0]
 
-    with open('C:\Users\PcUser\AppData\Local\Microsoft\Windows\History\History.IE5\MSHist012012030720120308\index.dat","r"') as HistoryFileData:
+    windows_path = "C:\Users\PcUser\AppData\Local\Microsoft\Windows\History\History.IE5\MSHist012012030720120308\index.dat"
+    with open(windows_path, 'r') as HistoryFileData:
         for line in HistoryFileData:
             self.batch_array = line.split('PcUser')
 
@@ -51,33 +52,47 @@ class GetHistoryData():
             removeNonAscii(s)
             return s
 
+class ClassName(object):
+    """docstring for """
+    def __init__(self, arg):
+        super(, self).__init__()
+        self.arg = arg
 
-            class HistoryFileData(Bviews.LoginRequiredMixin):
-            #
-            #
-            #         with open("C:\Users\PcUser\AppData\Local\Microsoft\Windows\History\History.IE5\MSHist012012030720120308\index.dat","r") as infile:
-            #             for line in infile:
-            #                 batch_array = line.split("PcUser")
-            #
-            #             for s in batch_array:
-            #                 removeNonAscii(s)
-            #                 return s
-##############################
+        urlFixtureData = [
+          {
+            "model": "gethistoryfile.UrlStore",
+            "pk": 1,
+            "fields": {
+              "first_name": "John",
+              "last_name": "Lennon"
+            }
+          },
+          {
+            "model": "gethistoryfile.UrlStore",
+            "pk": 2,
+            "fields": {
+              "first_name": "Paul",
+              "last_name": "McCartney"
+            }
+          }
+        ]
 
 
-class DetectOsPlatform(Bviews.LoginRequiredMixin,
-                    Bviews.PermissionRequiredMixin):
 
-    def __init__(self, *args , **kwargs):
-        self.os_name = os_name
-        self.os_version = os_version
-        self.kernel_release = kernel_release
 
-    def windows(self):
-        try:
-            pass
-        except:
-            pass
+# class DetectOsPlatform(Bviews.LoginRequiredMixin,
+#                     Bviews.PermissionRequiredMixin):
+#
+#     def __init__(self, *args , **kwargs):
+#         self.os_name = os_name
+#         self.os_version = os_version
+#         self.kernel_release = kernel_release
+#
+#     def windows(self):
+#         try:
+#             pass
+#         except:
+#             pass
 
 # class DetectBrowserDetails(Bviews.LoginRequiredMixin):
 

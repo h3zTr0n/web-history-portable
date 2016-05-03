@@ -29,6 +29,15 @@ class UrlOs(models.Model):
     def __str__(self):
         return ("Running {0}".format(os_name))
 
+class UrlStore(models.Model):
+    url = models.URLField()
+    date_searched = models.DateTimeField(auto_now_add=False)
+    last_visited = models.DateTimeField(auto_now=True)
+    username = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=False)
+    
+
+
 # class BrowserDetails(models.Model):
 #     url_name = models.CharField(max_length=255)
 #     browser_name = models.CharField(max_length=255)
