@@ -2,12 +2,12 @@
 # aka capt10guts
 
 from __future__ import absolute_import
-from __future__ import unicode_literals
 
-from django.shortcuts import render
 from braces import views as Bviews
-from django.views import generic
+from django.views.generic import DetailView
 import getpass
+from . import models
+from django.http import Http404
 
 def PcUser(self):
     try:
@@ -21,62 +21,93 @@ class HomeView(generic.TemplateView):
     """docstring for HomeView"""
     template_name = "templates/gethistory/home.html"
 
+class LinuxPathToHistoryFile(object):
+    """docstring for LinuxPathToistoryFile"""
+    def __init__(self, *args, **kwargs):
+        super(LinuxPathToistoryFile, self).__init__()
+        self.path = "/home/PcUser/.mozilla/firefox/bo0bkrwm.default-1362842976106/places.sqlite"
 
-class GetHistoryData():
-    """docstring for GetHistoryData"""
-    def __init__(self, ):
-        super(GetHistoryData, self).__init__()
-        self.Butch_array = []
-        self.array = []
-        self.string = ""
-        self.url = ""
-        self.lines = []
+        import sqlite3
 
-    def removeNonAscii(self):
-        url_line = ""
-        for i in self.string:
-            if(ord(i)==46 or ord(i)==47 or ord(i)==72 or ord(i) in range(97, 97+26) or ord(i) in range(65, 65+26)):
-                url_line = url_line + i
-            url_line = url_line.split('\n')
+    def readAndSendToModel(self):
+        data = self.path
+        readFromDb = sqlite3.connect("places.sqlite")
+        cur = readFromDb.cursor()
+        columns = cur.execute(" SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url, title  FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id
+                              ")
+        for col in columns:
+            modelCol = models.UrlStore.Create(col)
+            modelCol.save()
 
-            for line in url_lines:
-                if url_line.startswith('http'):
-                    return url_line.split('URL')[0]
+class UrlDetailView(DetailView):
+    """docstring for UrlDetailView"""
+    def __init__(self):
+        super(UrlDetailView, self).__init__()
 
-    windows_path = "C:\Users\PcUser\AppData\Local\Microsoft\Windows\History\History.IE5\MSHist012012030720120308\index.dat"
-    with open(windows_path, 'r') as HistoryFileData:
-        for line in HistoryFileData:
-            self.batch_array = line.split('PcUser')
+        # Get the name of a slug field to be used to look up by slug.
+    def get_slug_field(self):
+        return self.slug_field
 
-        for s in batch_array:
-            removeNonAscii(s)
-            return s
+        # Return the `QuerySet` that will be used to look up the object.
+    def get_queryset(self):
+        if self.queryset is None:
+            if self.model:
+                return self.model._default_manager.all()
+            else:
+                raise ImproperlyConfigured(
+                   "%(cls)s is missing a QuerySet. Define "
+                   "%(cls)s.model, %(cls)s.queryset, or override "
+                   "%(cls)s.get_queryset()." % {
+                       'cls': self.__class__.__name__
+                   }
+                  )
+    return self.queryset.all()
 
-class ClassName(object):
-    """docstring for """
-    def __init__(self, arg):
-        super(, self).__init__()
-        self.arg = arg
 
-        urlFixtureData = [
-          {
-            "model": "gethistoryfile.UrlStore",
-            "pk": 1,
-            "fields": {
-              "first_name": "John",
-              "last_name": "Lennon"
-            }
-          },
-          {
-            "model": "gethistoryfile.UrlStore",
-            "pk": 2,
-            "fields": {
-              "first_name": "Paul",
-              "last_name": "McCartney"
-            }
-          }
-        ]
+    # Returns the object the view is displaying.
 
+    def get_object(self):
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        # Next, try looking up by primary key.
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        slug = self.kwargs.get(self.slug_url_kwarg)
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+
+        # Next, try looking up by slug.
+        if slug is not None and (pk is None or self.query_pk_and_slug):
+            slug_field = self.get_slug_field()
+            queryset = queryset.filter(**{slug_field: slug})
+
+        # If none of those are defined, it's an error.
+        if pk is None and slug is None:
+            raise AttributeError("Generic detail view %s must be called with"
+                                 "either an object pk or a slug."
+                                 % self.__class__.__name__)
+    try:
+
+        # Get the single item from the filtered queryset
+        obj = queryset.get()
+    except queryset.model.DoesNotExist:
+        raise Http404(_("No %(verbose_name)s found matching the query") %
+                      {'verbose_name': queryset.model._metz_verbose_name})
+    return obj
+
+
+
+
+
+
+
+
+    # SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url
+    # FROM moz_places, moz_historyvisits
+    # WHERE moz_places.id = moz_historyvisits.place_id
 
 
 
@@ -125,49 +156,6 @@ class ClassName(object):
 #
 
 
-# class LocateHistoryFile(object):
-#
-#     def fetchHistoryFile(self):
-#
-#
-y   #         pattern = "(((http)|(https))(://)(www.)|().*?)\.[a-z]*/"
-#
-#         SQL_STATEMENT = 'SELECT urls.url, visit_time FROM \
-#         visits, urls WHERE visits.url=urls.id;'
-#
-#         storage = codecs.open('out.csv', 'w', 'utf-8')
-#
-#         def date_from_webkit(webkit_timestamp):
-#         epoch_start = datetime.datetime(1601,1,1)
-#         delta = datetime.timedelta(microseconds=int(webkit_timestamp))
-#         return epoch_start + delta
-#
-#         paths = ["~/Archived History", "~/History"]
-#
-#         for path in paths:
-#         c = sqlite3.connect(path)
-#         for row in c.execute(SQL_STATEMENT):
-#             date_time = date_from_webkit(row[1])
-#             url = re.search(pattern, row[0])
-#             try:
-#                 urlc = url.group(0)
-#             except:
-#                 urlc = "ERROR"
-#             storage.write(str(date_time)[0:19] + "\t" + urlc + "\n")
-#
-#     def senitizeFile(self):
-#
-#     def filterData(self):
-#
-#     def storeData(self):
-#
-#     def store_to_json(self):
-#
-#     def read_from_json(self):
-#
-#     def store_to_db(self):
-#
-#     def get_queryset(self):
 
 #############################
 # st =  csv.re
@@ -185,171 +173,3 @@ y   #         pattern = "(((http)|(https))(://)(www.)|().*?)\.[a-z]*/"
 #             url_time = epoch + timedelta(microseconds=row[3])
 #             row[3] = url_time
 #             csv_writer.writerow(row)
-
-
-            #################################################
-            # import os
-# import datetime
-# import sqlite3
-# import codecs, re
-#
-# pattern = "(((http)|(https))(://)(www.)|().*?)\.[a-z]*/"
-#
-# SQL_STATEMENT = 'SELECT urls.url, visit_time FROM visits, urls WHERE visits.url=urls.id;'
-#
-# storage = codecs.open('out.csv', 'w', 'utf-8')
-#
-# def date_from_webkit(webkit_timestamp):
-#     epoch_start = datetime.datetime(1601,1,1)
-#     delta = datetime.timedelta(microseconds=int(webkit_timestamp))
-#     return epoch_start + delta
-#
-# paths = ["~/Archived History", "~/History"]
-#
-# for path in paths:
-#     c = sqlite3.connect(path)
-#     for row in c.execute(SQL_STATEMENT):
-#         date_time = date_from_webkit(row[1])
-#         url = re.search(pattern, row[0])
-#         try: urlc = url.group(0)
-#         except: urlc = "ERROR"
-#         storage.write(str(date_time)[0:19] + "\t" + urlc + "\n")
-#####################333
-# from collections import deque
-#
-
-# class BrowserHistory(object, Bviews.LoginRequiredMixin):
-    # '''Class for keeping track of the history while moving
-    # to different locations, as implemented in Web browsers.
-    #
-    # Both back and forward history are supported and each of them can be bounded
-    # or unbounded.
-    #
-    # >>> h = BrowserHistory(max_back=3, max_forward=3)
-    # >>> h.location = 'http://www.google.com/'
-    # >>> h.location = 'http://www.python.org/'
-    # >>> h.location = 'http://xkcd.com/'
-    # >>> h.location = 'http://www.slashdot.org/'
-    # >>> h.location = 'http://www.digg.com/'
-    # >>> h.back()
-    # 'http://www.slashdot.org/'
-    # >>> h.forward()
-    # 'http://www.digg.com/'
-    # >>> h.go(-2)
-    # 'http://xkcd.com/'
-    # >>> # max_back=3 so any result more than 3 pages back is deleted
-    # >>> for i_loc in h.indexed_locations():
-    # ...     print '%+d: %s' % i_loc
-    # +2: http://www.digg.com/
-    # +1: http://www.slashdot.org/
-    # +0: http://xkcd.com/
-    # -1: http://www.python.org/
-    # >>> # visiting a new location erases the forward history
-    # >>> h.location = 'http://en.wikipedia.org/'
-    # >>> for i_loc in h.indexed_locations():
-    # ...     print '%+d: %s' % i_loc
-    # +0: http://en.wikipedia.org/
-    # -1: http://xkcd.com/
-    # -2: http://www.python.org/
-    # '''
-    #
-    # def __init__(self, location=None, max_back=None, max_forward=None):
-    #     '''Initialize a new BrowserHistory instance.
-    #
-    #     :param location: If not None, the initial location.
-    #     :param max_back: The maximum number of back locations to remember
-    #         (default: no limit)
-    #     :param max_forward: The maximum number of forward locations to remember
-    #         (default: no limit)
-    #     '''
-    #     if max_back is not None:
-    #         max_back += 1   # +1 for storing the current location
-    #     self._back = deque(maxlen=max_back)
-    #     self._forward = deque(maxlen=max_forward)
-    #     if location is not None:
-    #         self.location = location
-    #
-    # @property
-    # def location(self):
-    #     '''The current location, i.e. the last location set or went to by
-    #     :meth:`back`, :meth:`forward` or :meth:`go`.
-    #     '''
-    #     if self._back:
-    #         return self._back[-1]
-    #     raise AttributeError('location has not been set')
-    #
-    # @location.setter
-    # def location(self, value):
-    #     '''Go to a new location. Any existing forward history is erased.'''
-    #     self._back.append(value)
-    #     self._forward.clear()
-    #
-    # def back(self, i=1):
-    #     '''Jump to a location in history ``i`` steps back.
-    #
-    #     :param i: The number of steps to jump back.
-    #     :type i: positive int
-    #     :returns: The current :attr:`location`.
-    #     '''
-    #     if i > 0:
-    #         push_forward = self._forward.appendleft
-    #         pop_back = self._back.pop
-    #         for _ in xrange(min(i, len(self._back)-1)):
-    #             push_forward(pop_back())
-    #     return self.location
-    #
-    # def forward(self, i=1):
-    #     '''Jump to a location in history ``i`` steps forward.
-    #
-    #     :param i: The number of steps to jump forward.
-    #     :type i: positive int
-    #     :returns: The current :attr:`location`.
-    #     '''
-    #     if i > 0:
-    #         push_back = self._back.append
-    #         pop_forward = self._forward.popleft
-    #         for _ in xrange(min(i, len(self._forward))):
-    #             push_back(pop_forward())
-    #     return self.location
-    #
-    # def go(self, i):
-    #     '''Jump to a location in history ``i`` steps back or forward.
-    #
-    #     :param i: The number of steps to jump forward (if positive) or back (if negative).
-    #     :type i: int
-    #     :returns: The current :attr:`location`.
-    #     '''
-    #     if i < 0:
-    #         return self.back(-i)
-    #     if i > 0:
-    #         return self.forward(i)
-    #     return self.location
-    #
-    # def indexed_locations(self):
-    #     '''Return a list of ``(index,location)`` tuples for each location in history.
-    #
-    #     The index ``i`` of a location ``l`` is defined so that ``go(i) == l``.
-    #     Therefore indexes are positive for forward locations, negative for back
-    #     locations and zero for the current :attr:`location`.
-    #     '''
-    #     result = []
-    #     # back and current locations
-    #     n = len(self._back)-1
-    #     result.extend((i-n, location) for i,location in enumerate(self._back))
-    #     # forward locations
-    #     result.extend((i+1, location) for i,location in enumerate(self._forward))
-    #     result.reverse()
-    #     return result
-
-
-# if __name__ == '__main__':
-#     import doctest; doctest.testmod()
-# import sys
-# from datetime import datetime, timedelta
-# import csv
-# from binascii import *
-# from chardet import *
-# import re
-# import os
-# import codecs
-# fetching pc user related to history

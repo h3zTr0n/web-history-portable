@@ -19,7 +19,7 @@ class User(models.Model):
          return user
 
     class Meta:
-        unique_together = ('user', 'sex',)
+        unique_together = (('user', 'sex',))
 
 class UrlOs(models.Model):
     os_name = models.CharField(max_length=255)
@@ -35,7 +35,13 @@ class UrlStore(models.Model):
     last_visited = models.DateTimeField(auto_now=True)
     username = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
-    
+
+# fetchng from model dar
+class ReadUrlModelData(object):
+    """docstring for ReadUrlModelData"""
+    def __init__(self, arg):
+        super(ReadUrlModelData, self).__init__()
+        self.arg = arg
 
 
 # class BrowserDetails(models.Model):
