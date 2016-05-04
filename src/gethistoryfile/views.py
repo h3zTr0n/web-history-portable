@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 
 from braces import views as Bviews
-from django.views.generic import DetailView
+from django.views import generic
 import getpass
 from . import models
 from django.http import Http404
@@ -33,13 +33,13 @@ class LinuxPathToHistoryFile(object):
         data = self.path
         readFromDb = sqlite3.connect("places.sqlite")
         cur = readFromDb.cursor()
-        columns = cur.execute(" SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url, title  FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id
+        columns = cur.execute(" SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url, title  FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id \
                               ")
         for col in columns:
             modelCol = models.UrlStore.Create(col)
             modelCol.save()
 
-class UrlDetailView(DetailView):
+class UrlDetailView(generic.DetailView):
     """docstring for UrlDetailView"""
     def __init__(self):
         super(UrlDetailView, self).__init__()
@@ -61,7 +61,7 @@ class UrlDetailView(DetailView):
                        'cls': self.__class__.__name__
                    }
                   )
-    return self.queryset.all()
+        return self.queryset.all()
 
 
     # Returns the object the view is displaying.
@@ -89,14 +89,14 @@ class UrlDetailView(DetailView):
             raise AttributeError("Generic detail view %s must be called with"
                                  "either an object pk or a slug."
                                  % self.__class__.__name__)
-    try:
+        try:
 
-        # Get the single item from the filtered queryset
-        obj = queryset.get()
-    except queryset.model.DoesNotExist:
-        raise Http404(_("No %(verbose_name)s found matching the query") %
-                      {'verbose_name': queryset.model._metz_verbose_name})
-    return obj
+            # Get the single item from the filtered queryset
+            obj = queryset.get()
+        except queryset.model.DoesNotExist:
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._metz_verbose_name})
+        return obj
 
 
 
