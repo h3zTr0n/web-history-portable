@@ -1,3 +1,6 @@
+# Author: Alison Mukoma
+# a.k.a cap10guts
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 

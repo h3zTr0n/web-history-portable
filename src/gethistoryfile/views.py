@@ -1,5 +1,5 @@
 # Author: Alison Mukoma
-# aka capt10guts
+# a.k.a capt10guts
 
 from __future__ import absolute_import
 
@@ -17,9 +17,9 @@ def PcUser(self):
     except Exception as e:
         return(str(e),+ ".Anonymous user agent.")
 
-class HomeView(generic.TemplateView):
+class ActivitiesView(generic.TemplateView, Bviews.LoginRequiredMixin, Bviews.AnonymousRequiredMixin):
     """docstring for HomeView"""
-    template_name = "templates/gethistory/home.html"
+    template_name = "gethistoryfile/activities.html"
 
 class LinuxPathToHistoryFile(object):
     """docstring for LinuxPathToistoryFile"""
@@ -35,6 +35,7 @@ class LinuxPathToHistoryFile(object):
         cur = readFromDb.cursor()
         columns = cur.execute(" SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url, title  FROM moz_places, moz_historyvisits WHERE moz_places.id = moz_historyvisits.place_id \
                               ")
+        rows = cursor.fetchall()
         for col in columns:
             modelCol = models.UrlStore.Create(col)
             modelCol.save()
@@ -103,59 +104,9 @@ class UrlDetailView(generic.DetailView):
 
 
 
-
-
     # SELECT datetime(moz_historyvisits.visit_date/1000000,'unixepoch'), moz_places.url
     # FROM moz_places, moz_historyvisits
     # WHERE moz_places.id = moz_historyvisits.place_id
-
-
-
-# class DetectOsPlatform(Bviews.LoginRequiredMixin,
-#                     Bviews.PermissionRequiredMixin):
-#
-#     def __init__(self, *args , **kwargs):
-#         self.os_name = os_name
-#         self.os_version = os_version
-#         self.kernel_release = kernel_release
-#
-#     def windows(self):
-#         try:
-#             pass
-#         except:
-#             pass
-
-# class DetectBrowserDetails(Bviews.LoginRequiredMixin):
-
-
-# class HistoryFileData(Bviews.LoginRequiredMixin):
-#     def __init__(self, *args, **kwargs):
-#             self.Butch_array = []
-#             self.array = []
-#             self.string = ""
-#             self.url = ""
-#             self.lines = []
-#     def removeNonAscii(string):
-#         url_line = ""
-#         for i in string:
-#             if(ord(i)==46 or ord(i)==47 or ord(i)==72 or ord(i) in range(97, 97+26) or ord(i) in range(65, 65+26)):
-#                 url_line = url_line + i
-#             url_lines = url_line.split('\n')
-#
-#             for url_line in url_lines:
-#                 if url_line.startswith('http'):
-#                     print url_line.split('URL')[0]
-#
-#         with open("C:\Users\PcUser\AppData\Local\Microsoft\Windows\History\History.IE5\MSHist012012030720120308\index.dat","r") as infile:
-#             for line in infile:
-#                 batch_array = line.split("PcUser")
-#
-#             for s in batch_array:
-#                 removeNonAscii(s)
-#                 return s
-#
-
-
 
 #############################
 # st =  csv.re

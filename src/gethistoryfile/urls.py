@@ -6,5 +6,5 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-url(r'^home/activity', views.HomeView.as_view(), name="activity"),
+url(r'activities', views.ActivitiesView.as_view(), name="home"),
 ]
