@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+import getpass
 # from django.template.defaultfilters import slugify
 # Create your models here.
 
@@ -32,12 +33,26 @@ class UrlOs(models.Model):
     def __str__(self):
         return ("Running {0}".format(os_name))
 
+def PcUser():
+    try:
+        user = getpass.getuser()
+        # user = os.environ.get("USERNAME")
+        return str(user)
+    except Exception as e:
+        return(str(e)+ ".Anonymous user agent.")
+
 class UrlStore(models.Model):
+    """Docstring for returning Current Pc UserAgent """
+    # def __init__(self):
     url = models.URLField()
-    date_searched = models.DateTimeField(auto_now_add=False)
-    last_visited = models.DateTimeField(auto_now=True)
-    username = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=False)
+    date_visited = models.DateTimeField(auto_now=True)
+    search_text = models.CharField(max_length=255)
+    user = models.Func(PcUser)
+    # username = models.CharField(max_length=255)
+    # is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return url
 
 # fetchng from model dar
 class ReadUrlModelData(object):
