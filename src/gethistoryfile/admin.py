@@ -6,9 +6,8 @@ from .models import UrlStore
 class SignUpAdmin(admin.ModelAdmin):
     """docstring for SignUpAdmin"""
     list_display = ["__unicode__", "url", "date_visited", "search_text", "user"]
-    def __init__(self, arg):
-        super(SignUpAdmin, self).__init__()
-        self.arg = arg
+    # def __init__(self):
+    #     super(SignUpAdmin, self).__init__()
     class Meta:
         model = UrlStore
 
