@@ -11,12 +11,17 @@ from django.http import Http404
 from .tables import UrlTable
 from table.views import FeedDataView
 
-class MyDataView(FeedDataView):
+
+class ActivitiesView(generic.TemplateView,FeedDataView):
+    """docstring for HomeView"""
+    template_name = "gethistoryfile/activities.html"
+    model = models.UrlStore
+# class MyDataView(FeedDataView):
 
     token = UrlTable.token
 
     def get_queryset(self):
-        return super(MyDataView, self).get_queryset().filter(id_gt=2)
+        return super(ActivitiesView, self).get_queryset().filter(id_gt=2)
 
 
 
@@ -27,10 +32,6 @@ def PcUser(self):
         return str(user)
     except Exception as e:
         return(str(e),+ ".Anonymous user agent.")
-
-class ActivitiesView(generic.TemplateView, Bviews.LoginRequiredMixin, Bviews.AnonymousRequiredMixin):
-    """docstring for HomeView"""
-    template_name = "gethistoryfile/activities.html"
 
 class LinuxPathToHistoryFile(object):
     """docstring for LinuxPathToistoryFile"""

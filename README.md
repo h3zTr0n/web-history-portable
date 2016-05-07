@@ -1,10 +1,7 @@
 
-
-# Alison Mukoma  
-
 #  Web-history-portable
 
-My_proj is a _short description_. It is built with [Python][0] using the [Django Web Framework][1].
+Web-history-portable is an app that allows for portablility of your web surg=fing history online therefore you nolonger have to memmorise your surfing url content anymore. It is built with [Python][0] using the [Django Web Framework][1].
 
 This project has the following basic apps:
 
@@ -34,5 +31,5 @@ Run migrations:
 
 Take a look at the docs for more information.
 
-[0]: https://www.python.org/
-[1]: https://www.djangoproject.com/
+[0]: https://www.alisoncodes.net/
+[1]: https://www.cap10guts.com/
