@@ -7,31 +7,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 import getpass
-# from django.template.defaultfilters import slugify
-# Create your models here.
-
-CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        )
-class User(models.Model):
-    user = models.CharField(max_length=255)
-    slug = models.SlugField()
-    sex = models.CharField(choices=CHOICES, max_length=2)
-
-    def __str__(self):
-         return user
-
-    class Meta:
-        unique_together = (('user', 'sex',))
-
-class UrlOs(models.Model):
-    os_name = models.CharField(max_length=255)
-    os_version = models.CharField(max_length=255)
-    os_kernel = models.CharField(max_length=255)
-
-    def __str__(self):
-        return ("Running {0}".format(os_name))
 
 def PcUser():
     try:
@@ -54,13 +29,6 @@ class UrlStore(models.Model):
     def __str__(self):
         return url
 
-# fetchng from model dar
-class ReadUrlModelData(object):
-    """docstring for ReadUrlModelData"""
-    def __init__(self, arg):
-        super(ReadUrlModelData, self).__init__()
-        self.arg = arg
-
 
 # class BrowserDetails(models.Model):
 #     url_name = models.CharField(max_length=255)
@@ -72,3 +40,29 @@ class ReadUrlModelData(object):
 #
 #     def __str__(self):
 #         return url_name
+
+# from django.template.defaultfilters import slugify
+# Create your models here.
+
+# CHOICES = (
+#         ('M', 'Male'),
+#         ('F', 'Female'),
+#         )
+# class User(models.Model):
+#     user = models.CharField(max_length=255)
+#     slug = models.SlugField()
+#     sex = models.CharField(choices=CHOICES, max_length=2)
+
+    # def __str__(self):
+    #      return user
+    #
+    # class Meta:
+    #     unique_together = (('user', 'sex',))
+
+# class UrlOs(models.Model):
+#     os_name = models.CharField(max_length=255)
+#     os_version = models.CharField(max_length=255)
+#     os_kernel = models.CharField(max_length=255)
+
+    # def __str__(self):
+    #     return ("Running {0}".format(os_name))

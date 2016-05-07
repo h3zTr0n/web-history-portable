@@ -8,6 +8,17 @@ from django.views import generic
 import getpass
 from . import models
 from django.http import Http404
+from .tables import UrlTable
+from table.views import FeedDataView
+
+class MyDataView(FeedDataView):
+
+    token = UrlTable.token
+
+    def get_queryset(self):
+        return super(MyDataView, self).get_queryset().filter(id_gt=2)
+
+
 
 def PcUser(self):
     try:

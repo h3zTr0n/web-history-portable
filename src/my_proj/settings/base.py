@@ -70,15 +70,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    # my project Apps are installed from here
     'authtools',
     'crispy_forms',
     'easy_thumbnails',
-
     'profiles',
     'accounts',
     'talks',
     'gethistoryfile',
+    'table',
 )
 
 MIDDLEWARE_CLASSES = (

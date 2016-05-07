@@ -7,4 +7,5 @@ from . import views
 
 urlpatterns = [
 url(r'activities', views.ActivitiesView.as_view(), name="home"),
+url(r'^table/data', views.MyDataView.as_view(), name='data_table'),
 ]

@@ -7,6 +7,7 @@ import accounts.urls
 from . import views
 import gethistoryfile.urls
 from gethistoryfile.views import ActivitiesView
+from gethistoryfile import urls as Turls
 
 urlpatterns = [
     url(r'^$', views.HomePage.as_view(), name='home'),
@@ -15,6 +16,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^activities/$', ActivitiesView.as_view(), name='activities'),
+    url(r'^table/', include(Turls)),
       ]
 
 # User-uploaded files like profile pics need to be served in development
